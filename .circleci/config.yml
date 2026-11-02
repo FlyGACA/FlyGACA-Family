@@ -1,0 +1,19 @@
+version: 2.1
+
+# Validation only: no deployment credentials or production mutations.
+jobs:
+  docs:
+    docker:
+      - image: node:22-bookworm
+    resource_class: small
+    steps:
+      - checkout
+      - run:
+          name: Check README paths and section links
+          command: |
+            node .github/scripts/check-readmes.mjs
+
+workflows:
+  validation:
+    jobs:
+      - docs
