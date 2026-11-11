@@ -181,3 +181,5 @@ It checks tracked README links to repository paths and sections on the same page
 <sub>Crafted with excellence in Saudi Arabia</sub>
 
 </div>
+
+[GACAR and Saudi AIP cross-reference](REGULATORY-CROSSWALK.md) — repository topics, official sections, editions and review gaps.
