@@ -11,7 +11,7 @@
 
 **Find the right product, codebase and source of truth.**
 
-[FlyGACA](https://flygaca.com) · [Captain Adel](https://captadel.com) · [GitHub](https://github.com/iflygaca)
+[FlyGACA](https://flygaca.com) · [Captain Adel](https://captadel.com) · [GitHub](https://github.com/FlyGACA)
 
 The public directory for Fly GACA's aviation learning ecosystem. Start with the product you need, then use its own repository guide for setup, architecture and release status.
 
@@ -40,6 +40,10 @@ The public directory for Fly GACA's aviation learning ecosystem. Start with the 
 
 </details>
 
+## Find the owning repository
+
+Use **Choose your destination** to find the product or team workspace. If an update spans products, check **Source-of-truth rules** before editing shared facts or assets.
+
 ## Where a change belongs
 
 ```mermaid
@@ -59,10 +63,10 @@ flowchart LR
 | --- | --- | --- |
 | Student pilots and instructors | [FlyGACA](https://flygaca.com) | Regulatory reference, study and flight tools |
 | Learners with a question | [Captain Adel](https://captadel.com) | Bilingual explanations with source evidence |
-| Native-app developers | [iOS](https://github.com/iflygaca/iOS) | SwiftUI study apps and the separate Captain Adel app |
-| Product developers | [FlyGACA repository](https://github.com/iflygaca/FlyGACA) | Web app, API and content exports |
-| AI-service developers | [Captain-Adel repository](https://github.com/iflygaca/Captain-Adel) | Retrieval, grounding, tools and evaluations |
-| Authorized operators | [Office](https://github.com/iflygaca/Office) | Internal strategy, governance and operating documents |
+| Native-app developers | [iOS](https://github.com/FlyGACA/iOS) | SwiftUI study apps and the separate Captain Adel app |
+| Product developers | [FlyGACA repository](https://github.com/FlyGACA/FlyGACA) | Web app, API and content exports |
+| AI-service developers | [Captain-Adel repository](https://github.com/FlyGACA/Captain-Adel) | Retrieval, grounding, tools and evaluations |
+| Authorized operators | [Office](https://github.com/FlyGACA/Office) | Internal strategy, governance and operating documents |
 
 Some repositories are private. A link in this directory does not grant access.
 
@@ -72,10 +76,10 @@ Some repositories are private. A link in this directory does not grant access.
 
 | Surface | Domain | Repository | What it covers |
 | --- | --- | --- | --- |
-| FlyGACA web | [flygaca.com](https://flygaca.com) | [FlyGACA](https://github.com/iflygaca/FlyGACA) | Regulatory reference, study and flight tools |
-| Captain Adel | [captadel.com](https://captadel.com) | [Captain-Adel](https://github.com/iflygaca/Captain-Adel) | Bilingual explanations with source evidence |
-| Native apps | — | [iOS](https://github.com/iflygaca/iOS) | SwiftUI study apps and the separate Captain Adel app |
-| Office | — | [Office](https://github.com/iflygaca/Office) | Internal strategy, governance and operating documents |
+| FlyGACA web | [flygaca.com](https://flygaca.com) | [FlyGACA](https://github.com/FlyGACA/FlyGACA) | Regulatory reference, study and flight tools |
+| Captain Adel | [captadel.com](https://captadel.com) | [Captain-Adel](https://github.com/FlyGACA/Captain-Adel) | Bilingual explanations with source evidence |
+| Native apps | — | [iOS](https://github.com/FlyGACA/iOS) | SwiftUI study apps and the separate Captain Adel app |
+| Office | — | [Office](https://github.com/FlyGACA/Office) | Internal strategy, governance and operating documents |
 
 <a id="how-the-pieces-connect"></a>
 
@@ -108,7 +112,7 @@ The family contract is mirrored in Office, FlyGACA and Captain-Adel. Change it a
 
 ## Brand marks
 
-Every app shares one falcon mark. The upper wing stays blue and only the lower wing's gradient changes per app. The source, the full-size variants and the generator live in [`iflygaca/Office`](https://github.com/iflygaca/Office) (`11-brand/logos/` and `tools/brand/`); the copies here are for reference.
+Every app shares one falcon mark. The upper wing stays blue and only the lower wing's gradient changes per app. The source, the full-size variants and the generator live in [`iflygaca/Office`](https://github.com/FlyGACA/Office) (`11-brand/logos/` and `tools/brand/`); the copies here are for reference.
 
 | Mark | App | Lower wing |
 | --- | --- | --- |
@@ -142,7 +146,7 @@ flowchart LR
 
 ## Hugging Face
 
-[The flygaca namespace](https://huggingface.co/flygaca) hosts related retrieval and evaluation assets. Their source and publishing instructions live in [Captain-Adel/huggingface](https://github.com/iflygaca/Captain-Adel/tree/main/huggingface). Check the Hub card and latest workflow before describing an asset as live or a model as trained.
+[The flygaca namespace](https://huggingface.co/flygaca) hosts related retrieval and evaluation assets. Their source and publishing instructions live in [Captain-Adel/huggingface](https://github.com/FlyGACA/Captain-Adel/tree/main/huggingface). Check the Hub card and latest workflow before describing an asset as live or a model as trained.
 
 <a id="direction-for-2027"></a>
 
