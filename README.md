@@ -42,6 +42,8 @@ The public directory for Fly GACA's aviation learning ecosystem. Start with the 
 
 ## Find the owning repository
 
+See the [public repository directory](REPOSITORIES.md) for each public repository’s purpose and lifecycle.
+
 Use **Choose your destination** to find the product or team workspace. If an update spans products, check **Source-of-truth rules** before editing shared facts or assets.
 
 ## Where a change belongs
