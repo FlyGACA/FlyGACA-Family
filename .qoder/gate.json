@@ -1,0 +1,20 @@
+{
+  "profile": "family",
+  "label": "FlyGACA",
+  "requiredFiles": [
+    "README.md",
+    "LICENSE"
+  ],
+  "jsonFiles": [],
+  "readmeCheck": ".github/scripts/check-readmes.mjs",
+  "markdownLinks": false,
+  "assetDirs": [
+    "brand",
+    ".github/readme"
+  ],
+  "maxAssetKb": 1500,
+  "publicDir": null,
+  "scanDirs": [],
+  "requiredScripts": [],
+  "expectsNodeModules": false
+}
