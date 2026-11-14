@@ -1,0 +1,15 @@
+---
+description: Every Arabic guide needs an English counterpart, kept in structural parity.
+globs: ["**/*_AR.md"]
+alwaysApply: true
+---
+
+# Bilingual parity policy
+
+Arabic and English guides ship together.
+
+- Every `README_AR.md` (or `*_AR.md`) must have a sibling English file with the same base name: `README_AR.md` → `README.md` in the same directory.
+- Both files must cover the same sections in the same order. Headings, tables, and citation numbers must match one-to-one.
+- Do not machine-translate a regulatory claim. Translate the explanation, keep the GACAR citation exactly as in the English source, and verify the Arabic wording against the official Arabic publication where one exists.
+- When you add a section to the English file, add it to the Arabic file in the same change; never leave the pair out of step.
+- `node scripts/gate.mjs` must report zero `bilingual` findings before a content PR is ready.

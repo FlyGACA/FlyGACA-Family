@@ -76,12 +76,12 @@ Some repositories are private. A link in this directory does not grant access.
 
 ## Ecosystem at a glance
 
-| Surface | Domain | Repository | What it covers |
-| --- | --- | --- | --- |
-| FlyGACA web | [flygaca.com](https://flygaca.com) | `FlyGACA` (private) | Regulatory reference, study and flight tools |
-| Captain Adel | [captadel.com](https://captadel.com) | `Captain-Adel` (private) | Bilingual explanations with source evidence |
-| Native apps | — | `iOS` (private) | SwiftUI study apps and the separate Captain Adel app |
-| Office | — | `Office` (private) | Internal strategy, governance and operating documents |
+| Surface | Domain | Repository | Owner | What it covers |
+| --- | --- | --- | --- | --- |
+| FlyGACA web | [flygaca.com](https://flygaca.com) | `FlyGACA` (private) | @FlyGACA | Regulatory reference, study and flight tools |
+| Captain Adel | [captadel.com](https://captadel.com) | `Captain-Adel` (private) | @FlyGACA | Bilingual explanations with source evidence |
+| Native apps | — | `iOS` (private) | @FlyGACA | SwiftUI study apps and the separate Captain Adel app |
+| Office | — | `Office` (private) | @FlyGACA | Internal strategy, governance and operating documents |
 
 <a id="how-the-pieces-connect"></a>
 
@@ -166,7 +166,7 @@ Deployments, databases and inference providers can use different regions. Consul
 
 ## بالعربية
 
-فلاي قاكا منظومة تعليمية مستقلة لطلاب الطيران والمدربين. يقدم الموقع المراجع والدراسة والأدوات، ويقدم الكابتن عادل الشرح المستند إلى المصادر، ويحتوي مستودع iOS على التطبيقات الأصلية. وثائق التشغيل في Office مخصصة للمصرح لهم. تحقق من حالة الإصدار في مستودع المنتج، ومن النص التنظيمي في المصدر الرسمي.
+فلاي قاكا منظومة تعليمية مستقلة لطلاب الطيران والمدربين، وهي غير تابعة لهيئة الطيران المدني (GACA) وغير مرتبطة بها ولا معتمدة منها، والهيئة هي المصدر الرسمي. يقدم الموقع المراجع والدراسة والأدوات، ويقدم الكابتن عادل الشرح المستند إلى المصادر، ويحتوي مستودع iOS على التطبيقات الأصلية. وثائق التشغيل في Office مخصصة للمصرح لهم. تحقق من حالة الإصدار في مستودع المنتج، ومن النص التنظيمي في المصدر الرسمي.
 
 ## Keep this guide healthy
 

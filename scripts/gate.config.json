@@ -1,0 +1,32 @@
+{
+  "name": "family",
+  "description": "FlyGACA-Family: public directory. Disclaimer, repository register, citations, links, freshness.",
+  "disclaimer": {
+    "files": ["README.md"],
+    "english": "not affiliated with",
+    "arabic": "غير\\s+تابع|لا\\s+تتبع|غير\\s+مرتبط|لا\\s+علاقة|لا\\s+ترتبط|غير\\s+مرخّ?ص"
+  },
+  "gacar": {
+    "include": ["**/*.md"],
+    "maxPart": 199
+  },
+  "bilingual": {
+    "arabic": ["**/*_AR.md"],
+    "requireCounterparts": true
+  },
+  "register": {
+    "files": ["README.md", "REPOSITORIES.md"],
+    "requiredColumns": ["Repository", "Owner"]
+  },
+  "links": {
+    "include": ["**/*.md"],
+    "exclude": ["node_modules/**"],
+    "external": false,
+    "maxExternal": 25
+  },
+  "sources": {
+    "include": ["**/*.md"],
+    "maxAgeDays": 180,
+    "required": []
+  }
+}

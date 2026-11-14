@@ -6,7 +6,7 @@ You are running the scheduled, read-only gate for this repository.
 
 - Read-only. Do not create, modify, stage, commit, or delete any file.
 - Do not install dependencies.
-- From the repository root, run exactly one command: `node scripts/gate.mjs`
+- From the repository root, run exactly one command: `node scripts/repo-gate.mjs`
 - Do not work around a failing check. Report it as it is.
 
 ## Report

@@ -1,0 +1,23 @@
+---
+description: Repository register tables must name a real owner for every repository.
+globs: ["**/README.md", "**/REPOSITORIES.md"]
+alwaysApply: true
+---
+
+# Repository register policy
+
+Any table whose rows describe repositories must carry both columns:
+
+```markdown
+| Repository | Owner | Status | What it covers |
+| --- | --- | --- | --- |
+| FlyGACA-Family | @iflygaca/maintainers | active | Public ecosystem index |
+```
+
+Rules:
+
+- `Owner` is required and must be a real GitHub team or user (`@iflygaca/maintainers`, `@iflygaca/office`), not a person's unverified name.
+- Never write `unverified`, `TBD`, `?`, or leave the cell empty. If ownership is genuinely unknown, resolve it (CODEOWNERS, the repo's maintainers) before publishing the row.
+- Keep `Status` in step with the repository: active, archived, private, or draft.
+- Do not publish a repository register in more than one file. The gate reads `README.md` and `REPOSITORIES.md`; keep a single source of truth.
+- `node scripts/gate.mjs` must report zero `register` findings before a content PR is ready.

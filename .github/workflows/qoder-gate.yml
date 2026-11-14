@@ -1,0 +1,93 @@
+name: Content gate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '15 3 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+  security-events: write
+  pull-requests: write
+
+jobs:
+  gate:
+    name: Six-check content gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Verify the gate is installed
+        run: |
+          if [ ! -f scripts/gate.mjs ]; then
+            echo "scripts/gate.mjs not found. Install the content pack first: ./install.sh <repo> --config <name>" >&2
+            exit 1
+          fi
+      - name: Run gate (SARIF)
+        run: node scripts/gate.mjs --format sarif --out gate.sarif
+      - name: Upload SARIF
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: gate.sarif
+          category: content-gate
+      - name: Run gate (text summary)
+        if: always()
+        run: node scripts/gate.mjs --format text
+
+  external-links:
+    name: Weekly external link check
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Check external links
+        run: node scripts/gate.mjs --only links --external --format text
+
+  qoder-review:
+    name: Qoder AI review (optional)
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    env:
+      QODER_API_KEY: ${{ secrets.QODER_API_KEY }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check for the Qoder CLI and credentials
+        id: check
+        run: |
+          if [ -z "${QODER_API_KEY:-}" ]; then
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "QODER_API_KEY is not set; skipping AI review."
+            exit 0
+          fi
+          if ! command -v qoder >/dev/null 2>&1; then
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "qoder CLI is not on PATH; add an install step or use a self-hosted runner."
+            exit 0
+          fi
+          echo "enabled=true" >> "$GITHUB_OUTPUT"
+      - name: Run Qoder headless review
+        if: steps.check.outputs.enabled == 'true'
+        run: |
+          qoder -p "Review this pull request's content changes against AGENTS.md and .qoder/rules. Report only concrete violations of the disclaimer, GACAR citation, bilingual parity, repository register, link, and source-freshness policies. Do not rewrite aviation facts. Output a short Markdown comment." \
+            --output-format json \
+            --permission-mode accept_edits \
+            --max-turns 20 > qoder-review.json
+          node -e "const fs=require('fs');const r=JSON.parse(fs.readFileSync('qoder-review.json','utf8'));const text=typeof r.result==='string'?r.result:(r.result&&r.result.text)||r.message||'';fs.writeFileSync('qoder-comment.md',text||'Qoder review produced no comment.');"
+      - name: Post the review as a PR comment
+        if: steps.check.outputs.enabled == 'true'
+        env:
+          PR_NUMBER: ${{ github.event.number }}
+        run: gh pr comment "$PR_NUMBER" --body-file qoder-comment.md
