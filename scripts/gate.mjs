@@ -67,12 +67,27 @@ export function globToRegExp(glob) {
   return new RegExp('^' + out + '$');
 }
 
+// Manual scan, not a regex strip: heading text is never rendered, and
+// regex tag removal reads as incomplete sanitization to static analysis.
+function stripTags(text) {
+  let out = '';
+  let i = 0;
+  while (i < text.length) {
+    const lt = text.indexOf('<', i);
+    if (lt === -1) return out + text.slice(i);
+    const gt = text.indexOf('>', lt + 1);
+    if (gt === -1) return out + text.slice(i);
+    out += text.slice(i, lt);
+    i = gt + 1;
+  }
+  return out;
+}
+
 /** GitHub-style heading slug, keeping Arabic letters. */
 export function slugify(text) {
-  return String(text)
+  return stripTags(String(text))
     .toLowerCase()
     .trim()
-    .replace(/<[^>]+>/g, '')
     .replace(/[`*_~]/g, '')
     .replace(/[^\p{L}\p{N}\s_-]/gu, '')
     .replace(/\s+/g, '-');

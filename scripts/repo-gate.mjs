@@ -144,8 +144,21 @@ if (config.readmeCheck) {
 // 4. Built-in local markdown link check (paths and same-file anchors).
 if (config.markdownLinks) {
   const stripCode = text => text.replace(/^\s*(`{3,}|~{3,})[^\n]*\n[\s\S]*?^\s*\1\s*$/gm, '');
+  const stripTags = text => {
+    let out = '';
+    let i = 0;
+    while (i < text.length) {
+      const lt = text.indexOf('<', i);
+      if (lt === -1) return out + text.slice(i);
+      const gt = text.indexOf('>', lt + 1);
+      if (gt === -1) return out + text.slice(i);
+      out += text.slice(i, lt);
+      i = gt + 1;
+    }
+    return out;
+  };
   const slug = text =>
-    text.replace(/<[^>]+>/g, '').replace(/[^\p{L}\p{N}_\s-]/gu, '').trim().toLowerCase().replace(/\s+/g, '-');
+    stripTags(text).replace(/[^\p{L}\p{N}_\s-]/gu, '').trim().toLowerCase().replace(/\s+/g, '-');
   const missing = [];
   for (const file of files.filter(item => /\.md$/i.test(item))) {
     const content = stripCode(readFileSync(path.join(root, file), 'utf8'));
