@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "generatedAt": "2026-11-14",
+  "expiresAt": "2026-11-21",
+  "regenerateWith": "node scripts/regenerate-scheduled-tasks.mjs",
+  "notes": "Qoder scheduled tasks expire 7 days after generatedAt. Run the regenerator to extend them. Durable schedules (weekly external-link check, PR gate) live in .github/workflows/qoder-gate.yml and do not expire.",
+  "tasks": [
+    {
+      "id": "gate-triage",
+      "title": "Daily gate triage",
+      "schedule": "0 7 * * 1-5",
+      "promptFile": ".qoder/prompts/daily-gate-triage.md",
+      "permissionMode": "accept_edits",
+      "maxTurns": 20,
+      "runFrom": "repository root"
+    },
+    {
+      "id": "source-refresh",
+      "title": "Weekly GACAR / AIP source refresh",
+      "schedule": "0 8 * * 1",
+      "promptFile": ".qoder/prompts/weekly-source-refresh.md",
+      "permissionMode": "accept_edits",
+      "maxTurns": 20,
+      "runFrom": "repository root"
+    },
+    {
+      "id": "register-audit",
+      "title": "Weekly repository register audit",
+      "schedule": "0 9 * * 1",
+      "promptFile": ".qoder/prompts/weekly-register-audit.md",
+      "permissionMode": "accept_edits",
+      "maxTurns": 20,
+      "runFrom": "repository root"
+    }
+  ]
+}

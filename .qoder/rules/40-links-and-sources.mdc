@@ -1,0 +1,29 @@
+---
+description: Relative links, anchors, and source-verified freshness markers.
+globs: ["**/*.md"]
+alwaysApply: true
+---
+
+# Links and source freshness policy
+
+## Links
+
+- Link to local content with relative paths (`./03_education/README.md`, `../shared/`), not absolute filesystem paths.
+- Anchors must match a real heading. GitHub slugs are lowercase, spaces become `-`, punctuation is dropped, Arabic letters are kept.
+- When you rename a file or heading, update every inbound link in the same change.
+- External links belong in prose only when the source is authoritative (gaca.gov.sa, official AIP publications). The weekly workflow checks them separately.
+
+## Source freshness
+
+Any page that makes a regulatory or operational claim carries a marker near the top:
+
+```markdown
+source-verified: 2026-11-14
+```
+
+Rules:
+
+- The date is the day a human checked the citation against the official source, not the day the file was edited.
+- Refresh the marker when the underlying GACAR part or AIP cycle changes, and when the weekly refresh task confirms the source is unchanged.
+- A marker older than 180 days fails the `sources` check. Do not bump a date without doing the verification.
+- `node scripts/gate.mjs` must report zero `links` and `sources` findings before a content PR is ready.

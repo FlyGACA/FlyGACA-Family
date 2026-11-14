@@ -1,0 +1,24 @@
+---
+description: Non-affiliation disclaimer required in English and Arabic on every FlyGACA surface.
+globs: ["**/*.md"]
+alwaysApply: true
+---
+
+# Disclaimer policy
+
+Every public FlyGACA surface must state that it is independent and **not affiliated with GACA**, in both languages on the same page.
+
+English (keep the negation):
+
+> Fly GACA is an independent educational platform, not affiliated with, endorsed by, or operated by GACA or the Government of Saudi Arabia. GACA (gaca.gov.sa) is always the authoritative source.
+
+Arabic (must include the negation, not only "independent"):
+
+> فلاي قاكا منظومة تعليمية مستقلة، غير تابعة لهيئة الطيران المدني (GACA) وغير مرتبطة بها ولا معتمدة منها. هيئة الطيران المدني هي المصدر الرسمي.
+
+Rules:
+
+- Never weaken "not affiliated with" to "independent" alone. The negation is the requirement.
+- Keep the disclaimer above the first regulatory claim or citation.
+- In Arabic, "منظومة تعليمية مستقلة" alone is not enough. Use غير تابعة / غير مرتبطة / لا تتبع / لا علاقة.
+- `node scripts/gate.mjs` must report zero `disclaimer` findings before a content PR is ready.

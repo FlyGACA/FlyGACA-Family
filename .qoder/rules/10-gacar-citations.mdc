@@ -1,0 +1,26 @@
+---
+description: GACAR citation hygiene — no FAA numbering, well-formed section signs, parts in range.
+globs: ["**/*.md"]
+alwaysApply: true
+---
+
+# GACAR citation policy
+
+Cite Saudi regulations as GACAR, never as FAA material.
+
+Correct:
+
+- `GACAR § 91.3` — one space after §, part.section, at most one dot.
+- `GACAR Part 91` — when referring to a whole part.
+
+Never write:
+
+- `14 CFR`, `FAR`, `FAA Part 91`, `FAA regulations` — these are FAA numbering. Rewrite as the corresponding GACAR citation and verify the mapping at gaca.gov.sa.
+- `§91`, `§§ 91.3`, or `§ 91.3.1` — malformed section signs.
+- `GACAR Part 999` or any part outside 1–199. The published GACAR index currently ends at Part 199 (Parts 175, 179, 183, and 193 exist). Verify a new part against the official GACAR index before citing it.
+
+Also:
+
+- Quote the paragraph you rely on; do not paraphrase a regulation and present it as a quotation.
+- If you cannot verify a citation against the official GACAR publication, mark the claim as unverified instead of inventing a part number.
+- `node scripts/gate.mjs` must report zero `gacar` findings before a content PR is ready.
