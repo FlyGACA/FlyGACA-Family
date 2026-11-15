@@ -154,6 +154,96 @@ test('register: flags repository rows with no Owner column', async () => {
   }
 });
 
+const REGISTER_CONFIG = {
+  register: {
+    files: ['README.md', 'REPOSITORIES.md'],
+    requiredColumns: ['Repository', 'Owner'],
+  },
+};
+
+async function registerFindings(files) {
+  const f = fixture();
+  try {
+    for (const [rel, content] of Object.entries(files)) f.write(rel, content);
+    return await runGate({ root: f.root, now: NOW, only: ['register'], config: REGISTER_CONFIG });
+  } finally {
+    f.cleanup();
+  }
+}
+
+test('register: finds the table when headers only contain "Repository" and "Owner"', async () => {
+  const result = await registerFindings({
+    'REPOSITORIES.md': [
+      '| Repository and guide | Purpose | Repository owner |',
+      '| --- | --- | --- |',
+      '| [C172](https://github.com/FlyGACA/C172) | Model | TBD |',
+      '',
+    ].join('\n'),
+  });
+  assert.equal(result.errors.length, 0);
+  assert.equal(result.warnings.length, 1);
+  assert.equal(result.warnings[0].check, 'register');
+  assert.equal(result.warnings[0].line, 3);
+  assert.match(result.warnings[0].message, /repository "C172"/);
+});
+
+test('register: flags owner cells that contain a placeholder word', async () => {
+  const result = await registerFindings({
+    'REPOSITORIES.md': [
+      '| Repository | Owner |',
+      '| --- | --- |',
+      '| C172 | Owner unverified |',
+      '| scout | Unverified owner |',
+      '| .github | TBD (ask maintainers) |',
+      '| FlyGACA-Family | — |',
+      '| Gallery | @FlyGACA |',
+      '',
+    ].join('\n'),
+  });
+  assert.equal(result.errors.length, 0);
+  assert.deepEqual(
+    result.warnings.map((w) => w.line),
+    [3, 4, 5, 6],
+  );
+  assert.ok(result.warnings.every((w) => /unverified/.test(w.message)));
+});
+
+test('register: flags an owner that is not a GitHub team or user', async () => {
+  const result = await registerFindings({
+    'REPOSITORIES.md': [
+      '| Repository | Owner |',
+      '| --- | --- |',
+      '| C172 | Jane Doe |',
+      '',
+    ].join('\n'),
+  });
+  assert.equal(result.warnings.length, 1);
+  assert.match(result.warnings[0].message, /not a GitHub team or user/);
+});
+
+test('register: accepts GitHub owners and ignores non-repository tables', async () => {
+  const result = await registerFindings({
+    'README.md': [
+      '| Surface | Repository | Owner |',
+      '| --- | --- | --- |',
+      '| FlyGACA web | `FlyGACA` (private) | @FlyGACA |',
+      '| Office | `Office` (private) | @FlyGACA/maintainers, @octocat |',
+      '',
+      '| Item | Owner | Consumer responsibility |',
+      '| --- | --- | --- |',
+      '| Chat contract | FlyGACA | Keep fields compatible |',
+      '',
+    ].join('\n'),
+    'REPOSITORIES.md': [
+      '| Repository and guide | Repository owner |',
+      '| --- | --- |',
+      '| [scout](https://github.com/FlyGACA/scout) | @FlyGACA/maintainers |',
+      '',
+    ].join('\n'),
+  });
+  assert.deepEqual(result.findings, []);
+});
+
 test('links: flags a broken cross-file anchor', async () => {
   const f = fixture();
   try {

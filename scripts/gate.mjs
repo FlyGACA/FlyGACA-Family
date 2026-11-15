@@ -217,6 +217,31 @@ function headerIndex(headers, name) {
   return headers.findIndex((h) => h.replace(/[`*_]/g, '').trim().toLowerCase() === want);
 }
 
+/**
+ * Column whose header is `name`, or failing that the first header that
+ * contains `name` as a word ("Repository and guide", "Repository owner").
+ * `skip` excludes a column already claimed by another required name.
+ */
+function columnIndex(headers, name, skip = -1) {
+  const exact = headerIndex(headers, name);
+  if (exact !== -1 && exact !== skip) return exact;
+  const escaped = name.replace(/[`*_]/g, '').trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const word = new RegExp(`(^|[^\\p{L}\\p{N}])${escaped}($|[^\\p{L}\\p{N}])`, 'iu');
+  return headers.findIndex((h, i) => i !== skip && word.test(h.replace(/[`*_]/g, '')));
+}
+
+/** Cell text without Markdown link targets or emphasis: "[C172](url)" -> "C172". */
+function cellText(cell) {
+  return String(cell || '')
+    .replace(/!?\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/[`*]/g, '')
+    .trim();
+}
+
+const OWNER_PLACEHOLDER = /(^|[^\p{L}])(unverified|unknown|tbd|tba|todo|pending|n\/a|none)($|[^\p{L}])/iu;
+const OWNER_EMPTY = /^[\s?—–-]*$/;
+const GITHUB_HANDLE = /(^|[\s,;(])@[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?(?:\/[A-Za-z0-9._-]+)?(?=$|[\s,;)])/;
+
 /* ------------------------------------------------------------------- checks */
 
 function checkDisclaimer(ctx) {
@@ -311,18 +336,22 @@ function checkRegister(ctx) {
   for (const file of files) {
     const lines = stripFences(read(ctx.root, file)).split(/\r?\n/);
     for (const table of parseTables(lines)) {
-      const repoIdx = headerIndex(table.headers, repoCol);
+      const ownerIdx = columnIndex(table.headers, ownerCol);
+      const repoIdx = columnIndex(table.headers, repoCol, ownerIdx);
       if (repoIdx === -1) continue;
-      const ownerIdx = headerIndex(table.headers, ownerCol);
       for (const row of table.rows) {
-        const name = (row.cells[repoIdx] || '').replace(/[`*]/g, '').trim() || '(unnamed row)';
+        const name = cellText(row.cells[repoIdx]) || '(unnamed row)';
         if (ownerIdx === -1) {
           ctx.add('warning', 'register', `repository "${name}" has no Owner column — Owner unverified`, file, row.line);
-        } else {
-          const owner = (row.cells[ownerIdx] || '').trim();
-          if (!owner || /^(unverified|tbd|todo|\?|n\/a|none)$/i.test(owner)) {
-            ctx.add('warning', 'register', `repository "${name}": Owner ${owner || 'empty'} — unverified`, file, row.line);
-          }
+          continue;
+        }
+        const owner = cellText(row.cells[ownerIdx]);
+        if (OWNER_EMPTY.test(owner)) {
+          ctx.add('warning', 'register', `repository "${name}": Owner empty — unverified`, file, row.line);
+        } else if (OWNER_PLACEHOLDER.test(owner)) {
+          ctx.add('warning', 'register', `repository "${name}": Owner "${owner}" is a placeholder — unverified`, file, row.line);
+        } else if (!GITHUB_HANDLE.test(owner)) {
+          ctx.add('warning', 'register', `repository "${name}": Owner "${owner}" is not a GitHub team or user (@org/team or @user)`, file, row.line);
         }
       }
     }

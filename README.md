@@ -28,7 +28,6 @@ The public directory for Fly GACA's aviation learning ecosystem. Start with the 
 <summary>On this page</summary>
 
 - [Choose your destination](#choose-your-destination)
-- [Ecosystem at a glance](#ecosystem-at-a-glance)
 - [How the pieces connect](#how-the-pieces-connect)
 - [Source-of-truth rules](#source-of-truth-rules)
 - [Brand marks](#brand-marks)
@@ -42,7 +41,7 @@ The public directory for Fly GACA's aviation learning ecosystem. Start with the 
 
 ## Find the owning repository
 
-See the [public repository directory](REPOSITORIES.md) for each public repository’s purpose and lifecycle.
+See the [public repository directory](REPOSITORIES.md) for the register. It is the single source of truth for repository ownership, purpose and lifecycle; this directory does not publish a second register table. Ownership resolves to the `@FlyGACA` organization account for every repository in it, public or private.
 
 Use **Choose your destination** to find the product or team workspace. If an update spans products, check **Source-of-truth rules** before editing shared facts or assets.
 
@@ -71,17 +70,6 @@ flowchart LR
 | Authorized operators | `Office` (private) | Internal strategy, governance and operating documents |
 
 Some repositories are private. A link in this directory does not grant access.
-
-<a id="ecosystem-at-a-glance"></a>
-
-## Ecosystem at a glance
-
-| Surface | Domain | Repository | Owner | What it covers |
-| --- | --- | --- | --- | --- |
-| FlyGACA web | [flygaca.com](https://flygaca.com) | `FlyGACA` (private) | @FlyGACA | Regulatory reference, study and flight tools |
-| Captain Adel | [captadel.com](https://captadel.com) | `Captain-Adel` (private) | @FlyGACA | Bilingual explanations with source evidence |
-| Native apps | — | `iOS` (private) | @FlyGACA | SwiftUI study apps and the separate Captain Adel app |
-| Office | — | `Office` (private) | @FlyGACA | Internal strategy, governance and operating documents |
 
 <a id="how-the-pieces-connect"></a>
 

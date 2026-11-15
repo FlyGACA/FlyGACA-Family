@@ -41,6 +41,20 @@ jobs:
         if: always()
         run: node scripts/gate.mjs --format text
 
+  gate-self-test:
+    name: Gate tests and repository gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run the gate's own tests
+        run: node --test test/gate.test.mjs
+      - name: Run the repository gate
+        if: always()
+        run: node scripts/repo-gate.mjs
+
   external-links:
     name: Weekly external link check
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
@@ -58,34 +72,64 @@ jobs:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     env:
-      QODER_API_KEY: ${{ secrets.QODER_API_KEY }}
+      # The Qoder CLI authenticates in CI from this variable. GitHub does not
+      # pass secrets to pull requests from forks, so those always skip.
+      QODER_PERSONAL_ACCESS_TOKEN: ${{ secrets.QODER_PERSONAL_ACCESS_TOKEN }}
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Check for the Qoder CLI and credentials
+      - name: Check for Qoder credentials
         id: check
         run: |
-          if [ -z "${QODER_API_KEY:-}" ]; then
+          if [ -z "${QODER_PERSONAL_ACCESS_TOKEN:-}" ]; then
             echo "enabled=false" >> "$GITHUB_OUTPUT"
-            echo "QODER_API_KEY is not set; skipping AI review."
-            exit 0
-          fi
-          if ! command -v qoder >/dev/null 2>&1; then
-            echo "enabled=false" >> "$GITHUB_OUTPUT"
-            echo "qoder CLI is not on PATH; add an install step or use a self-hosted runner."
+            reason="The repository secret QODER_PERSONAL_ACCESS_TOKEN is not set (or this pull request comes from a fork, which receives no secrets), so the AI review did not run. Add the secret under Settings > Secrets and variables > Actions to enable it."
+            echo "::notice title=Qoder AI review skipped::${reason}"
+            {
+              echo "### Qoder AI review skipped"
+              echo
+              echo "${reason}"
+            } >> "$GITHUB_STEP_SUMMARY"
             exit 0
           fi
           echo "enabled=true" >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-node@v4
+        if: steps.check.outputs.enabled == 'true'
+        with:
+          node-version: '20'
+      - name: Install the Qoder CLI
+        if: steps.check.outputs.enabled == 'true'
+        # GitHub-hosted runners do not ship the CLI; install a pinned version.
+        run: |
+          npm install -g @qoder-ai/qodercli@1.1.89
+          qoder --version
       - name: Run Qoder headless review
         if: steps.check.outputs.enabled == 'true'
         run: |
-          qoder -p "Review this pull request's content changes against AGENTS.md and .qoder/rules. Report only concrete violations of the disclaimer, GACAR citation, bilingual parity, repository register, link, and source-freshness policies. Do not rewrite aviation facts. Output a short Markdown comment." \
+          if ! qoder -p "Review this pull request's content changes against AGENTS.md and .qoder/rules. Report only concrete violations of the disclaimer, GACAR citation, bilingual parity, repository register, link, and source-freshness policies. Do not rewrite aviation facts. Output a short Markdown comment." \
             --output-format json \
             --permission-mode accept_edits \
-            --max-turns 20 > qoder-review.json
-          node -e "const fs=require('fs');const r=JSON.parse(fs.readFileSync('qoder-review.json','utf8'));const text=typeof r.result==='string'?r.result:(r.result&&r.result.text)||r.message||'';fs.writeFileSync('qoder-comment.md',text||'Qoder review produced no comment.');"
+            --max-turns 20 > qoder-review.json 2> qoder-review.err; then
+            echo "--- qoder stderr ---"
+            tail -20 qoder-review.err
+            echo "::error title=Qoder AI review failed::The Qoder CLI exited non-zero. If stderr reports an authentication error, QODER_PERSONAL_ACCESS_TOKEN is missing, invalid or expired: replace it under Settings > Secrets and variables > Actions."
+            exit 1
+          fi
+          node <<'EOF'
+          const fs = require('fs');
+          const raw = fs.readFileSync('qoder-review.json', 'utf8');
+          let text = '';
+          try {
+            const r = JSON.parse(raw);
+            text = typeof r.result === 'string' ? r.result : (r.result && r.result.text) || r.message || '';
+          } catch {
+            // Not a single JSON document; post the raw output instead.
+            text = raw.trim();
+          }
+          fs.writeFileSync('qoder-comment.md', text || 'Qoder review produced no comment.');
+          EOF
       - name: Post the review as a PR comment
         if: steps.check.outputs.enabled == 'true'
         env:
