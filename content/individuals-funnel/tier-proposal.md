@@ -57,7 +57,7 @@ Launch pricing does not stack with the welcome voucher.
 
 ## Open decisions for the owner
 
-1. Display prices inclusive or exclusive of 15% VAT. Copy currently says taxes are shown at checkout.
+1. Display prices inclusive or exclusive of 15% VAT. The copy says taxes are shown at checkout; the client price field is documented as VAT-inclusive. Pick one and the copy follows — inclusive is the recommended reading for ZATCA consumer display, and ready EN/AR lines are in `pricing-page.md`.
 2. Refund window and conditions. The pricing page now omits the refund answer deliberately and stays flag-gated until this is decided.
 3. Confirm the Gallery download pack size (proposed: five visuals) and whether Tier 2 includes one.
 4. Confirm the launch cap (100 customers) and the 14-day window.
@@ -66,6 +66,7 @@ Launch pricing does not stack with the welcome voucher.
 7. Launch cap: checkouts already in flight can take the count slightly past 100. Accept the overshoot, or reserve seats in advance.
 8. Approve the database migration that adds the `tier` column to entitlements. Nothing can carry the All Levels marker until it lands.
 9. Set the premium ceiling per surface or globally. Today the gateway and Captain Adel meter separately, so a pilot on both could reach about twice the approved daily number; a global ceiling needs one enforcement point.
+10. Offer a credited upgrade from Starter straight to All Levels. The copy now names only the two supported steps; adding the third pair is a credit-rule decision for the owner and Commerce.
 
 ## Entitlement contract
 
@@ -75,12 +76,14 @@ Confirmed with Platform and shared with Commerce and Captain Adel:
 - `entitlement.tier` takes exactly `study-pdf`, `study-qbank` or `all-levels`. `plan` stays `pro` for both Tier 2 and All Levels, so nothing may infer the top tier from `plan`.
 - The premium tutor opens only for a live entitlement with `tier: all-levels`; an expired entitlement grants no question bank and no premium.
 - One-time goods are not entitlements: purchased PDFs and the Gallery pack (`ownedPacks`) stay owned after a lapse. Expiry ends the entitlement's own benefits, not goods already bought.
-- Cross-store sync is named: `POST /api/partners/flightbag/entitlement`, HMAC-SHA256 hex over `${timestamp}.${rawBody}` with `x-flightbag-timestamp` and `x-flightbag-signature`, 5-minute skew, and its own secret `FLIGHTBAG_ENTITLEMENT_SECRET` (at least 16 characters). Payload `{ email, plan, tier, expiresAt, source, orderId }`; Platform maps the verified email to the account and accepts no uid.
-- Writer rules: grant and extend only. It never lowers `plan`, shortens `expiresAt`, clears a live `tier`, or touches another channel's `ownedPacks`, and it cannot close anything; refunds and revocations stay with Platform's billing path. 401, 409 and 422 write nothing; 202 with `matched: false` is retried by Commerce's reconcile.
-- Storage: the entitlements table has no `tier` column, so nothing can persist the marker yet. Adding it is a migration and needs owner approval before any path works.
+- Cross-store sync is named: `POST /api/partners/flightbag/entitlement`, HMAC-SHA256 hex over `${timestamp}.${rawBody}` with `x-flightbag-timestamp` and `x-flightbag-signature`, 5-minute skew, and its own secret `FLIGHTBAG_ENTITLEMENT_SECRET` (at least 16 characters). Payload `{ email, plan, tier, expiresAt, source, orderId }`; Platform maps the verified email to the account and accepts no uid. The signature covers the exact body bytes posted, so the client must not re-serialise between signing and sending.
+- `source` is the payment channel, not the partner: it must be `moyasar`, because the entitlements column is `CHECK (source IN ('moyasar','revenuecat','school','staff','founding'))`. FlightBag's identity travels in `orderId` and Platform's request log. `orderId` must match the FlightBag order shape `^FB-[2-9A-HJ-NP-Z]{8}$`.
+- Writer rules: grant and extend only. It never lowers `plan`, shortens `expiresAt`, clears a live `tier`, or touches another channel's `ownedPacks`, and it cannot close anything; refunds and revocations stay with Platform's billing path. 401, 409 and 422 write nothing; 202 with `matched: false` is retried by Commerce's reconcile. Rejections carry a named code — `expiry_required`, `expiry_invalid`, `source_not_allowed`, `order_id_invalid`, `plan_tier_mismatch` — so Commerce can log them without guessing.
+- Storage: the entitlements table has no `tier` column, so nothing can persist the marker yet. Adding it is a migration and needs owner approval before any path works. Until it lands the route fails closed: a 422 or 5xx, with nothing granted, nothing downgraded and nothing unmetered.
 - Metering is per surface today: the FlyGACA gateway meters web turns under `premium:<uid>`, and the Captain-Adel service meters direct `/v1/chat` calls under `uid:premium:<uid>`. The two counters are separate and not shared, so a pilot using both surfaces can reach roughly twice the approved daily number. One global ceiling needs one enforcement point or a shared store.
-- Tier 1 records `plan: free` with `tier: study-pdf`. A `free` row is inactive, so readers ignore its marker; Tier 1 access is the `ind.pdf.<level>` pack. Tier 1 sends `expiresAt: null`, so the route must accept a null expiry or that push fails permanently; the marker is informational, so nothing breaks.
-- Switch-on needs `FLYGACA_ORIGIN` and `FLIGHTBAG_ENTITLEMENT_SECRET` on both sides. Until they are set, FlightBag records the push as `disabled` and delivery is unaffected. Header names are case-insensitive; the sender writes `X-FlightBag-Timestamp` and `X-FlightBag-Signature`.
+- Tier 1 records `plan: free` with `tier: study-pdf`; any other `free` combination is 422 `plan_tier_mismatch`. A `free` row is inactive, so readers ignore its marker; Tier 1 access is the `ind.pdf.<level>` pack. Tier 1 sends `expiresAt: null`, which the route accepts as a permanent grant — null and absent mean the same thing. The term-bound tiers, `study-qbank` and `all-levels`, must carry a real expiry or they are 422 `expiry_required`, because a permanent marker would grant question-bank access or premium forever; an empty string or the string `"null"` is 422 `expiry_invalid`.
+- Publication: no price or discount value may sit in any shipped client bundle before the owner approves prices. "Withheld" means not published, not merely not rendered, and a lazy route chunk is still fetchable. Approved values come from server config, never a client constant.
+- Switch-on needs `FLIGHTBAG_ENTITLEMENT_SECRET` on both sides, same value, at least 16 characters; on Platform's side it is the only secret that route reads, separate from the voucher and invoice secrets. `FLYGACA_ORIGIN` is FlightBag's alone: the route is server-to-server, so no browser origin or CORS is involved. Until the secret is set, FlightBag records the push as `disabled` and delivery is unaffected. Header names are case-insensitive; the sender writes `X-FlightBag-Timestamp` and `X-FlightBag-Signature`.
 
 ## Work plan and status
 
@@ -88,15 +91,15 @@ Order: this proposal and copy first; then Commerce, Platform and Captain Adel bu
 
 | Task | Owner Waker | Repository | Owner | Status | PR | Blockers |
 | --- | --- | --- | --- | --- | --- | --- |
-| Tier and price proposal, funnel copy, email sequence, end card | Brand | FlyGACA-Family | @FlyGACA | In review: Scout re-review closed, no blockers; ready for owner | FlyGACA-Family #23, abacus #3 | Owner price approval |
-| Tier checkout and upgrades | Commerce | FlightBag | @FlyGACA | Draft PR; marker push implemented at 502ba4c; CI pending | FlightBag #134 | Owner: launch cap overshoot; owner: migration; env vars at switch-on |
+| Tier and price proposal, funnel copy, email sequence, end card | Brand | FlyGACA-Family | @FlyGACA | Ready for owner; Scout's two copy findings fixed (upgrade steps named, VAT reading flagged) | FlyGACA-Family #23, abacus #3 | Owner price approval; owner VAT reading |
+| Tier checkout and upgrades | Commerce | FlightBag | @FlyGACA | Draft PR; marker push at 502ba4c; needs `source: 'moyasar'` and the `orderId` shape confirmed; CI pending | FlightBag #134 | Commerce: the two contract fixes; owner: launch cap overshoot; owner: migration |
 | Monthly and yearly question-bank subscription in Moyasar test mode | Commerce | FlightBag | @FlyGACA | Draft PR in the same branch; CI pending | FlightBag #134 | CI green before review |
 | Bundle and welcome vouchers | Commerce | FlightBag | @FlyGACA | Draft PR in the same branch; no outbound email | FlightBag #134 | Owner: discount levels |
 | Gallery downloads as a top-tier bonus with entitlements | Commerce | Gallery | @FlyGACA | Draft PR; CI pending | Gallery #109 | Aviation Data must confirm the five ids; tier marker settled |
-| Single login and entitlements across web, FlightBag, iOS and Captain Adel | Platform | FlyGACA, iOS | @FlyGACA | Contract, decoder and partner writer in #395; blocked on the tier column | FlyGACA #395 | Owner: approve the migration; then the gateway premium meter, then the limit |
-| iOS in-app subscription plan | Platform | iOS | @FlyGACA | Plan open, docs only | iOS #125 | Store configuration needs owner approval |
-| Funnel analytics events: visit, signup, purchase, upgrade | Platform | FlyGACA | @FlyGACA | Four names in the closed set; visit and purchase wired, signup and upgrade vocabulary only | FlyGACA #395 | - |
-| Premium AI tutor gating, per-user usage limits and cost-per-user estimate | Captain Adel | Captain-Adel | @FlyGACA | Updated at f54bf21: H1 fixed, metering surfaces documented, Scout re-review requested | Captain-Adel #164 | Owner: ceiling scope (per surface vs global) and provider rates |
+| Single login and entitlements across web, FlightBag, iOS and Captain Adel | Platform | FlyGACA, iOS | @FlyGACA | Scout: no merge — the client decoder drops `tier`, an inferred-tier fallback contradicts the contract, and unapproved prices sit in the main bundle; blocked on the tier column | FlyGACA #395 | Platform: wire `tier` through the decoder, delete the fallback, move prices server-side; owner: migration |
+| iOS in-app subscription plan | Platform | iOS | @FlyGACA | Docs only; CI red on an unrelated metadata drift check that may predate the branch | iOS #125 | Platform: confirm the drift on main; owner: store configuration, family sharing, restore semantics |
+| Funnel analytics events: visit, signup, purchase, upgrade | Platform | FlyGACA | @FlyGACA | Four names in the closed set; visit and purchase wired, signup and upgrade vocabulary only | FlyGACA #395 | Purchase props must come from the server confirm, not query params |
+| Premium AI tutor gating, per-user usage limits and cost-per-user estimate | Captain Adel | Captain-Adel | @FlyGACA | f54bf21: Scout withdrew H1; two Mediums open (sticky tier probe, trusted plus bearer unmetered); CI not green | Captain-Adel #164 | Captain Adel: probe TTL and trusted-path guard before the flag; owner: ceiling scope and provider rates |
 | Cited C172 and airspace visuals for free samples and premium study content | Aviation Data | C172, saudi-airspace | @FlyGACA | Assigned | - | - |
 | Read-only review of every PR for security, payments, entitlements and EN/AR parity | Scout | All repositories | @FlyGACA | Review delivered; #23 and #3 closed; #164 in review | - | Remaining builder PRs |
 

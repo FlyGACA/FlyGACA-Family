@@ -93,10 +93,12 @@ It is built for GACAR theory study, and each study unit lists the GACAR material
 PDFs are yours to keep. The question bank runs for the term you choose, and you can renew or upgrade at any time.
 
 **Can I upgrade later?**
-Yes. You pay the difference, and the amount you already paid is credited at checkout. Upgrades from Tier 2 to All Levels are credited within 90 days. Vouchers apply to a first purchase only and do not combine with upgrade credit.
+Yes. Upgrades move one tier at a time: Starter to Question Bank, or Question Bank to All Levels. You pay the difference, and what you paid for the earlier tier is credited at checkout, within 90 days for the step up to All Levels. Going from Starter straight to All Levels is not a credited upgrade. Vouchers apply to a first purchase only and do not combine with upgrade credit.
 
 **How is VAT handled?**
 Prices are in SAR. Taxes are shown at checkout.
+
+> Owner decision, open: the client price field is documented as VAT-inclusive. Choose one reading and the copy follows. If inclusive (recommended: ZATCA consumer display expects it), both this answer and the small print read "Prices are in SAR and include 15% VAT." / "الأسعار بالريال السعودي وتشمل ضريبة القيمة المضافة 15%." If exclusive, the current line stands and the client comment must change. Do not publish the page with the two readings unreconciled.
 
 **What do I need to start?**
 One FlyGACA account. It works across the website, FlightBag and the iOS app, and it keeps your entitlements in one place.
