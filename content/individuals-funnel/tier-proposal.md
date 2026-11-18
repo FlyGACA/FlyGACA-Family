@@ -58,7 +58,7 @@ Launch pricing does not stack with the welcome voucher.
 ## Open decisions for the owner
 
 1. Display prices inclusive or exclusive of 15% VAT. Copy currently says taxes are shown at checkout.
-2. Refund window and conditions. The pricing page carries a placeholder until this is decided.
+2. Refund window and conditions. The pricing page now omits the refund answer deliberately and stays flag-gated until this is decided.
 3. Confirm the Gallery download pack size (proposed: five visuals) and whether Tier 2 includes one.
 4. Confirm the launch cap (100 customers) and the 14-day window.
 5. Captain Adel usage limits inside Tier 3. Captain Adel proposes per-user limits and a cost-per-user estimate; the owner approves both.

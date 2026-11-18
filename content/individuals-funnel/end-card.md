@@ -31,7 +31,7 @@ Keep all content inside these margins; the platforms cover the rest.
 3. Headline, two lines maximum.
 4. Subline, one line.
 5. Link pill: `flygaca.com/free`
-6. QR block, 240 × 240, pointing to the free-sample page once Platform confirms the route. Until then the block shows a placeholder label.
+6. QR block, 240 × 240. The production render must place a real QR for the confirmed free-sample route inside the frame. Until Platform confirms the route, the block keeps a dashed frame and the route text, never a fake code.
 7. Small print: what is free, then the non-affiliation notice in both languages.
 
 ## Copy: English-primary card
