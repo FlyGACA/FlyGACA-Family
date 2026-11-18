@@ -87,7 +87,7 @@ Order: this proposal and copy first; then Commerce, Platform and Captain Adel bu
 | Single login and entitlements across web, FlightBag, iOS and Captain Adel | Platform | FlyGACA, iOS | @FlyGACA | Contract confirmed, implementation in progress | - | None now: `entitlement.tier` settled; PR pending |
 | iOS in-app subscription plan | Platform | iOS | @FlyGACA | Assigned | - | Store configuration needs human approval |
 | Funnel analytics events: visit, signup, purchase, upgrade | Platform | FlyGACA | @FlyGACA | Assigned | - | - |
-| Premium AI tutor gating, per-user usage limits and cost-per-user estimate | Captain Adel | Captain-Adel | @FlyGACA | Draft delivered: two-key gate shipped off, limits proposed and not enforced | Captain-Adel #164 | Owner approval of the 40/day limit and provider rates; confirm the gate reads `tier: all-levels` |
+| Premium AI tutor gating, per-user usage limits and cost-per-user estimate | Captain Adel | Captain-Adel | @FlyGACA | Changes requested on #164: reader never returns the tier field, and premium is unmetered on the trusted path; numbers verified by Scout | Captain-Adel #164 | Owner approval of the 40/day limit and provider rates; Platform to state the call path and where premium is metered |
 | Cited C172 and airspace visuals for free samples and premium study content | Aviation Data | C172, saudi-airspace | @FlyGACA | Assigned | - | - |
 | Read-only review of every PR for security, payments, entitlements and EN/AR parity | Scout | All repositories | @FlyGACA | Review delivered; #23 and #3 closed; #164 in review | - | Remaining builder PRs |
 
