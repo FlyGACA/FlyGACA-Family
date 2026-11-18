@@ -65,6 +65,7 @@ Launch pricing does not stack with the welcome voucher.
 6. Whether the annual question-bank subscription auto-renews or is bought per term.
 7. Launch cap: checkouts already in flight can take the count slightly past 100. Accept the overshoot, or reserve seats in advance.
 8. Approve the database migration that adds the `tier` column to entitlements. Nothing can carry the All Levels marker until it lands.
+9. Set the premium ceiling per surface or globally. Today the gateway and Captain Adel meter separately, so a pilot on both could reach about twice the approved daily number; a global ceiling needs one enforcement point.
 
 ## Entitlement contract
 
@@ -77,7 +78,7 @@ Confirmed with Platform and shared with Commerce and Captain Adel:
 - Cross-store sync is named: `POST /api/partners/flightbag/entitlement`, HMAC-SHA256 hex over `${timestamp}.${rawBody}` with `x-flightbag-timestamp` and `x-flightbag-signature`, 5-minute skew, and its own secret `FLIGHTBAG_ENTITLEMENT_SECRET` (at least 16 characters). Payload `{ email, plan, tier, expiresAt, source, orderId }`; Platform maps the verified email to the account and accepts no uid.
 - Writer rules: grant and extend only. It never lowers `plan`, shortens `expiresAt`, clears a live `tier`, or touches another channel's `ownedPacks`, and it cannot close anything; refunds and revocations stay with Platform's billing path. 401, 409 and 422 write nothing; 202 with `matched: false` is retried by Commerce's reconcile.
 - Storage: the entitlements table has no `tier` column, so nothing can persist the marker yet. Adding it is a migration and needs owner approval before any path works.
-- Metering: FlyGACA web calls its own gateway in-process; the remote Captain-Adel service is not used for signed-in pilots. Premium turns are metered in the gateway under `premium:<uid>`, dormant until the owner sets the limit. The remote API-key seam carries no user identity and must never carry premium.
+- Metering is per surface today: the FlyGACA gateway meters web turns under `premium:<uid>`, and the Captain-Adel service meters direct `/v1/chat` calls under `uid:premium:<uid>`. The two counters are separate and not shared, so a pilot using both surfaces can reach roughly twice the approved daily number. One global ceiling needs one enforcement point or a shared store.
 - Tier 1 records `plan: free` with `tier: study-pdf`. A `free` row is inactive, so readers ignore its marker; Tier 1 access is the `ind.pdf.<level>` pack.
 
 ## Work plan and status
@@ -94,7 +95,7 @@ Order: this proposal and copy first; then Commerce, Platform and Captain Adel bu
 | Single login and entitlements across web, FlightBag, iOS and Captain Adel | Platform | FlyGACA, iOS | @FlyGACA | Contract, decoder and partner writer in #395; blocked on the tier column | FlyGACA #395 | Owner: approve the migration; then the gateway premium meter, then the limit |
 | iOS in-app subscription plan | Platform | iOS | @FlyGACA | Plan open, docs only | iOS #125 | Store configuration needs owner approval |
 | Funnel analytics events: visit, signup, purchase, upgrade | Platform | FlyGACA | @FlyGACA | Four names in the closed set; visit and purchase wired, signup and upgrade vocabulary only | FlyGACA #395 | - |
-| Premium AI tutor gating, per-user usage limits and cost-per-user estimate | Captain Adel | Captain-Adel | @FlyGACA | Changes requested on #164: reader never returns the tier field, and premium is unmetered on the trusted path; numbers verified by Scout | Captain-Adel #164 | Owner approval of the 40/day limit and provider rates; Platform to state the call path and where premium is metered |
+| Premium AI tutor gating, per-user usage limits and cost-per-user estimate | Captain Adel | Captain-Adel | @FlyGACA | Updated at f54bf21: H1 fixed, metering surfaces documented, Scout re-review requested | Captain-Adel #164 | Owner: ceiling scope (per surface vs global) and provider rates |
 | Cited C172 and airspace visuals for free samples and premium study content | Aviation Data | C172, saudi-airspace | @FlyGACA | Assigned | - | - |
 | Read-only review of every PR for security, payments, entitlements and EN/AR parity | Scout | All repositories | @FlyGACA | Review delivered; #23 and #3 closed; #164 in review | - | Remaining builder PRs |
 
