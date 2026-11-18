@@ -3,7 +3,7 @@
 **Status:** draft. Do not send until the owner approves the copy, the voucher and the discount level.
 **Trigger:** signup on the free-sample page. **Length:** five emails plus one reminder. **Ends with:** the WELCOME15 voucher.
 
-Personalise `{first_name}`; fall back to "there" when it is empty. All links point to the live site or the free pack, never to a payment page.
+Personalise `{first_name}`; fall back to "there" when it is empty. All links point to the live site or the free pack, never to a payment page. The question-bank link opens the free practice demo, not checkout.
 
 ## Sequence
 
@@ -54,7 +54,7 @@ Three things to do this week:
 
 When you are ready for the full bank, it covers PPL, CPL, IR and ATPL.
 
-See the question bank → [question bank link]
+See the question bank → [question bank link — free demo, no payment]
 
 — The Fly GACA team
 

@@ -35,15 +35,18 @@ First 100 customers, 14 days from launch:
 
 Launch pricing does not stack with the welcome voucher.
 
+**Enforcement:** the window is one server-side promo config with a start and end timestamp plus a redemption counter. Whichever limit is reached first closes the offer, and the counter is shared across web, FlightBag and iOS. A closed promo does not reopen by editing copy.
+
 ## Welcome voucher
 
-**WELCOME15:** 15% off the first purchase, one use per customer, valid 14 days from signup. Issued by the last email of the welcome sequence.
+**WELCOME15:** 15% off the first purchase, one use per customer, valid 14 days from signup. Issued by the last email of the welcome sequence. It applies to a first purchase only; an upgrade order is not a first purchase and cannot carry a voucher.
 
 ## Upgrades
 
 - Tier 1 to Tier 2: pay the difference for the chosen question-bank term; the PDF price is credited in full.
 - Tier 2 to Tier 3: credit the amount paid for Tier 2 within 90 days of purchase.
 - All credit is calculated server-side at checkout. No manual codes, no refunds disguised as credit.
+- Precedence: vouchers apply to list price on a first purchase only. An order that uses upgrade credit cannot carry a voucher, and launch pricing never combines with WELCOME15. Commerce implements exactly this order: credit first, then no voucher.
 
 ## Why these numbers
 
@@ -67,7 +70,7 @@ Order: this proposal and copy first; then Commerce, Platform and Captain Adel bu
 
 | Task | Owner Waker | Repository | Owner | Status | PR | Blockers |
 | --- | --- | --- | --- | --- | --- | --- |
-| Tier and price proposal, funnel copy, email sequence, end card | Brand | FlyGACA-Family | @FlyGACA | In review | - | Owner price approval |
+| Tier and price proposal, funnel copy, email sequence, end card | Brand | FlyGACA-Family | @FlyGACA | In review: Scout findings fixed, re-review requested | FlyGACA-Family #23 | Owner price approval |
 | Tier checkout and upgrades | Commerce | FlightBag | @FlyGACA | Assigned | - | This proposal |
 | Monthly and yearly question-bank subscription in Moyasar test mode | Commerce | FlightBag | @FlyGACA | Assigned | - | This proposal |
 | Bundle and welcome vouchers | Commerce | FlightBag | @FlyGACA | Assigned | - | Discount approval |
@@ -77,7 +80,7 @@ Order: this proposal and copy first; then Commerce, Platform and Captain Adel bu
 | Funnel analytics events: visit, signup, purchase, upgrade | Platform | FlyGACA | @FlyGACA | Assigned | - | - |
 | Premium AI tutor gating, per-user usage limits and cost-per-user estimate | Captain Adel | Captain-Adel | @FlyGACA | Assigned | - | Owner approval of limits |
 | Cited C172 and airspace visuals for free samples and premium study content | Aviation Data | C172, saudi-airspace | @FlyGACA | Assigned | - | - |
-| Read-only review of every PR for security, payments, entitlements and EN/AR parity | Scout | All repositories | @FlyGACA | Assigned | - | PRs to review |
+| Read-only review of every PR for security, payments, entitlements and EN/AR parity | Scout | All repositories | @FlyGACA | Review delivered for #23 and #3; re-review requested | - | Remaining builder PRs |
 
 ## Risks and notes
 

@@ -12,7 +12,7 @@
 | Duration on screen | 3 seconds, held to the end of the video |
 | Background | Ufuq Night `#0A0E12` with a soft Deep `#0F1A24` horizon band |
 | Text | Space Grotesk for Latin, Tajawal for Arabic |
-| Accent | Ufuq Teal `#2D6E8A` for the filled action, Ufuq Teal Bright `#4A9CB8` for the link text |
+| Accent | Ufuq Teal `#2D6E8A` for the filled action with white text; Ufuq Teal Bright `#4A9CB8` for the accent rule and the wordmark |
 | Small print | Ivory at reduced opacity, both languages |
 
 ## Safe zones
@@ -60,7 +60,9 @@ Subline: فصل واحد. عشرون سؤالًا. بلا بطاقة.
 
 Link: flygaca.com/free
 
-Small print: حزمة بداية مجانية لـ PPL وCPL وIR وATPL.
+Small print: حزمة بداية مجانية لجميع المستويات الأربعة.
+
+The Arabic free line names the levels in words instead of listing the Latin acronyms, so no acronym run can break across a line. The four levels still appear in the top tag.
 
 Small print, second block, Arabic: فلاي قاكا منظومة تعليمية مستقلة، غير تابعة لهيئة الطيران المدني (GACA) وغير مرتبطة بها ولا معتمدة منها. هيئة الطيران المدني هي المصدر الرسمي.
 
@@ -74,6 +76,7 @@ Fade the wordmark and eyebrow in at 0.0 s, the headline at 0.2 s, the link pill 
 
 - One call to action per episode. Do not add episode titles, discounts or prices to the card.
 - The link is the free sample, never a payment page.
+- `render-endcard.js` writes `output/` and refreshes `previews/` in the `abacus` repository. Rendering needs network access for the Google Fonts request.
 - Keep the disclaimer readable at 100% zoom; if it is not, shorten the free-pack line, never the notice.
 - Arabic card is reviewed by a native speaker on a phone screen before use.
 - Regenerate the QR only when Platform confirms the final route.

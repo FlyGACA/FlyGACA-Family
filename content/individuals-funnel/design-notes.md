@@ -35,7 +35,7 @@ These notes keep the pricing page, free-sample page and end card on the UFUQ ide
 - Arabic never gets letter-spacing; the token layer already zeroes tracking under `:lang(ar)`.
 - Codes and level names stay left to right inside Arabic text with `.ufuq-latin`.
 - Mirror the card order visually, not the reading order of the comparison table headers.
-- Numerals: this package uses Arabic-Indic numerals in Arabic prose while the pricing page matches checkout totals. Pick one system site-wide, recommend Western digits on the page to match the payment sheet, and apply it in one place.
+- Numerals: Western digits site-wide, including Arabic copy, so the page matches the checkout totals. The Arabic documents in this package use Western digits; do not mix systems.
 
 ## Accessibility
 

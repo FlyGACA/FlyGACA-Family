@@ -16,6 +16,14 @@ Secondary action: **Compare tiers**
 
 Trust line: PPL · CPL · IR · ATPL — Online question bank — English and Arabic — One account across web, FlightBag and iOS.
 
+## Non-affiliation notice
+
+Place this directly under the hero, above any tier card or GACAR mention, and repeat it in the footer.
+
+English: Fly GACA is an independent educational platform, not affiliated with, endorsed by, or operated by GACA or the Government of Saudi Arabia. GACA (gaca.gov.sa) is always the authoritative source.
+
+Arabic: فلاي قاكا منظومة تعليمية مستقلة، غير تابعة لهيئة الطيران المدني (GACA) وغير مرتبطة بها ولا معتمدة منها. هيئة الطيران المدني هي المصدر الرسمي.
+
 ## Tier cards
 
 ### Study PDF — 149 SAR
@@ -63,10 +71,10 @@ Action: **Add the question bank**
 | Included | Study PDF | Study + Question Bank | All Levels |
 | --- | --- | --- | --- |
 | PDF study guide | One level | One level | All four levels |
-| Online question bank | — | 6 or 12 months | 12 months |
-| All levels PPL, CPL, IR, ATPL | — | — | Yes |
-| Gallery download pack | — | — | Five visuals |
-| Captain Adel premium | — | — | Yes, with usage limits |
+| Online question bank | Not included | 6 or 12 months | 12 months |
+| All levels PPL, CPL, IR, ATPL | Not included | Not included | Yes |
+| Gallery download pack | Not included | Not included | Five visuals |
+| Captain Adel premium | Not included | Not included | Yes, with usage limits |
 | English and Arabic | Yes | Yes | Yes |
 | Updates within the current edition | Yes | Yes | Yes |
 
@@ -79,16 +87,13 @@ A set of online practice questions organised by level, with spaced repetition: q
 PPL, CPL, IR and ATPL. Tier 1 and Tier 2 cover one level of your choice; All Levels covers all four.
 
 **Is the material based on GACAR?**
-Yes. The study material follows GACAR. GACA (gaca.gov.sa) is always the authoritative source, so verify current publications before relying on any aviation information.
+It is built for GACAR theory study, and each study unit lists the GACAR material it draws on. GACA (gaca.gov.sa) is always the authoritative source, so verify current publications before relying on any aviation information. The citation mapping is an Aviation Data deliverable and a condition of publishing this page.
 
 **How long do I keep access?**
 PDFs are yours to keep. The question bank runs for the term you choose, and you can renew or upgrade at any time.
 
 **Can I upgrade later?**
-Yes. You pay the difference, and the amount you already paid is credited at checkout. Upgrades from Tier 2 to All Levels are credited within 90 days.
-
-**Do you offer refunds?**
-[PLACEHOLDER — refund policy pending owner approval. Do not publish this answer until confirmed.]
+Yes. You pay the difference, and the amount you already paid is credited at checkout. Upgrades from Tier 2 to All Levels are credited within 90 days. Vouchers apply to a first purchase only and do not combine with upgrade credit.
 
 **How is VAT handled?**
 Prices are in SAR. Taxes are shown at checkout.
@@ -103,15 +108,14 @@ Not sure yet? Read the free chapter and try twenty questions first.
 Action: **Get the free chapter**
 Line under the action: No card needed.
 
-## Non-affiliation notice
+## Footer notice
 
-English: Fly GACA is an independent educational platform, not affiliated with, endorsed by, or operated by GACA or the Government of Saudi Arabia. GACA (gaca.gov.sa) is always the authoritative source.
-
-Arabic: فلاي قاكا منظومة تعليمية مستقلة، غير تابعة لهيئة الطيران المدني (GACA) وغير مرتبطة بها ولا معتمدة منها. هيئة الطيران المدني هي المصدر الرسمي.
+Repeat the notice above in the footer on every breakpoint.
 
 ## Implementation notes for Platform
 
 - Prices, tier names and voucher codes must come from one configuration source, not from page copy, so a price change never needs a code edit in two places.
-- Keep the disclaimer above the first regulatory mention on the page and permanently visible in the footer.
+- Keep the notice directly under the hero and again in the footer, before any tier card or GACAR mention.
 - Layout follows [design-notes.md](design-notes.md): logical properties, mirrored layout in Arabic, no letter-spacing in Arabic, codes such as GACAR set left to right inside Arabic text.
-- The refund answer stays a placeholder until the owner decides; do not ship the bracket text.
+- Do not ship placeholder text. The refund answer is deliberately absent until the owner decides; add it as approved copy, never as a bracketed TODO.
+- Citation mapping for the GACAR FAQ answer is an Aviation Data deliverable; do not publish that answer ahead of it.
