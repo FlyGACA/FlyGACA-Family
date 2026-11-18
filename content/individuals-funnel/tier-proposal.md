@@ -63,15 +63,17 @@ Launch pricing does not stack with the welcome voucher.
 4. Confirm the launch cap (100 customers) and the 14-day window.
 5. Captain Adel usage limits inside Tier 3. Captain Adel proposes per-user limits and a cost-per-user estimate; the owner approves both.
 6. Whether the annual question-bank subscription auto-renews or is bought per term.
+7. Launch cap: checkouts already in flight can take the count slightly past 100. Accept the overshoot, or reserve seats in advance.
 
 ## Entitlement contract
 
 Confirmed with Platform and shared with Commerce and Captain Adel:
 
-- One additive field on the Account API v1 entitlement: `{ plan, expiresAt?, source?, tier? }`. No new endpoint and no client writes; the server sets `tier` on the same paths as `plan`.
+- One additive field on the Account API v1 entitlement: `{ plan, expiresAt?, source?, tier? }`. No new public endpoint and no client writes; the server sets `tier` on the same paths as `plan`. A FlightBag-to-Account-API upsert is a separate internal route, described below.
 - `entitlement.tier` takes exactly `study-pdf`, `study-qbank` or `all-levels`. `plan` stays `pro` for both Tier 2 and All Levels, so nothing may infer the top tier from `plan`.
 - The premium tutor opens only for a live entitlement with `tier: all-levels`; an expired entitlement grants no question bank and no premium.
 - One-time goods are not entitlements: purchased PDFs and the Gallery pack (`ownedPacks`) stay owned after a lapse. Expiry ends the entitlement's own benefits, not goods already bought.
+- Cross-store sync: FlightBag owns its entitlement record and writes `tier` literally on purchase and upgrade, but it does not write the Account API. Commerce proposes a server-to-server, HMAC-signed, idempotent upsert (`{ email, plan, tier, expiresAt, source, orderId }`, idempotent on `orderId`); Platform names the route, the secret and the retry contract. Until it exists, an All Levels buyer is entitled in FlightBag only and premium stays closed, which is the correct fail-closed state.
 
 ## Work plan and status
 
@@ -80,10 +82,10 @@ Order: this proposal and copy first; then Commerce, Platform and Captain Adel bu
 | Task | Owner Waker | Repository | Owner | Status | PR | Blockers |
 | --- | --- | --- | --- | --- | --- | --- |
 | Tier and price proposal, funnel copy, email sequence, end card | Brand | FlyGACA-Family | @FlyGACA | In review: Scout re-review closed, no blockers; ready for owner | FlyGACA-Family #23, abacus #3 | Owner price approval |
-| Tier checkout and upgrades | Commerce | FlightBag | @FlyGACA | Assigned | - | This proposal |
-| Monthly and yearly question-bank subscription in Moyasar test mode | Commerce | FlightBag | @FlyGACA | Assigned | - | This proposal |
-| Bundle and welcome vouchers | Commerce | FlightBag | @FlyGACA | Assigned | - | Discount approval |
-| Gallery downloads as a top-tier bonus with entitlements | Commerce | Gallery | @FlyGACA | Assigned | - | Key on `entitlement.tier`; the pack is a permanent `ownedPacks` item, not a lapsed benefit |
+| Tier checkout and upgrades | Commerce | FlightBag | @FlyGACA | Draft PR; CI pending | FlightBag #134 | Owner: launch cap overshoot; Platform: signed entitlement upsert |
+| Monthly and yearly question-bank subscription in Moyasar test mode | Commerce | FlightBag | @FlyGACA | Draft PR in the same branch; CI pending | FlightBag #134 | CI green before review |
+| Bundle and welcome vouchers | Commerce | FlightBag | @FlyGACA | Draft PR in the same branch; no outbound email | FlightBag #134 | Owner: discount levels |
+| Gallery downloads as a top-tier bonus with entitlements | Commerce | Gallery | @FlyGACA | Draft PR; CI pending | Gallery #109 | Aviation Data must confirm the five ids; tier marker settled |
 | Single login and entitlements across web, FlightBag, iOS and Captain Adel | Platform | FlyGACA, iOS | @FlyGACA | Contract confirmed, implementation in progress | - | None now: `entitlement.tier` settled; PR pending |
 | iOS in-app subscription plan | Platform | iOS | @FlyGACA | Assigned | - | Store configuration needs human approval |
 | Funnel analytics events: visit, signup, purchase, upgrade | Platform | FlyGACA | @FlyGACA | Assigned | - | - |
