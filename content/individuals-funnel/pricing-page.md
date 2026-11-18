@@ -93,7 +93,7 @@ It is built for GACAR theory study, and each study unit lists the GACAR material
 PDFs are yours to keep. The question bank runs for the term you choose, and you can renew or upgrade at any time.
 
 **Can I upgrade later?**
-Yes. Upgrades move one tier at a time: Starter to Question Bank, or Question Bank to All Levels. You pay the difference, and what you paid for the earlier tier is credited at checkout, within 90 days for the step up to All Levels. Going from Starter straight to All Levels is not a credited upgrade. Vouchers apply to a first purchase only and do not combine with upgrade credit.
+Yes. Upgrades move one tier at a time: Study PDF to Study + Question Bank, or Study + Question Bank to All Levels. You pay the difference, and what you paid for the earlier tier is credited at checkout, within 90 days for the step up to All Levels. Going from Study PDF straight to All Levels is not a credited upgrade. Vouchers apply to a first purchase only and do not combine with upgrade credit.
 
 **How is VAT handled?**
 Prices are in SAR. Taxes are shown at checkout.
