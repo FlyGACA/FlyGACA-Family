@@ -64,6 +64,15 @@ Launch pricing does not stack with the welcome voucher.
 5. Captain Adel usage limits inside Tier 3. Captain Adel proposes per-user limits and a cost-per-user estimate; the owner approves both.
 6. Whether the annual question-bank subscription auto-renews or is bought per term.
 
+## Entitlement contract
+
+Confirmed with Platform and shared with Commerce and Captain Adel:
+
+- One additive field on the Account API v1 entitlement: `{ plan, expiresAt?, source?, tier? }`. No new endpoint and no client writes; the server sets `tier` on the same paths as `plan`.
+- `entitlement.tier` takes exactly `study-pdf`, `study-qbank` or `all-levels`. `plan` stays `pro` for both Tier 2 and All Levels, so nothing may infer the top tier from `plan`.
+- The premium tutor opens only for a live entitlement with `tier: all-levels`; an expired entitlement grants no question bank and no premium.
+- One-time goods are not entitlements: purchased PDFs and the Gallery pack (`ownedPacks`) stay owned after a lapse. Expiry ends the entitlement's own benefits, not goods already bought.
+
 ## Work plan and status
 
 Order: this proposal and copy first; then Commerce, Platform and Captain Adel build in parallel behind feature flags; Aviation Data supplies cited sample content; Scout reviews every PR before the owner.
@@ -74,11 +83,11 @@ Order: this proposal and copy first; then Commerce, Platform and Captain Adel bu
 | Tier checkout and upgrades | Commerce | FlightBag | @FlyGACA | Assigned | - | This proposal |
 | Monthly and yearly question-bank subscription in Moyasar test mode | Commerce | FlightBag | @FlyGACA | Assigned | - | This proposal |
 | Bundle and welcome vouchers | Commerce | FlightBag | @FlyGACA | Assigned | - | Discount approval |
-| Gallery downloads as a top-tier bonus with entitlements | Commerce | Gallery | @FlyGACA | Assigned | - | Entitlement model |
-| Single login and entitlements across web, FlightBag, iOS and Captain Adel | Platform | FlyGACA, iOS | @FlyGACA | Assigned | - | Entitlement contract must carry a tier marker (tier, products or explicit premium); Captain Adel's premium gate cannot open without it |
+| Gallery downloads as a top-tier bonus with entitlements | Commerce | Gallery | @FlyGACA | Assigned | - | Key on `entitlement.tier`; the pack is a permanent `ownedPacks` item, not a lapsed benefit |
+| Single login and entitlements across web, FlightBag, iOS and Captain Adel | Platform | FlyGACA, iOS | @FlyGACA | Contract confirmed, implementation in progress | - | None now: `entitlement.tier` settled; PR pending |
 | iOS in-app subscription plan | Platform | iOS | @FlyGACA | Assigned | - | Store configuration needs human approval |
 | Funnel analytics events: visit, signup, purchase, upgrade | Platform | FlyGACA | @FlyGACA | Assigned | - | - |
-| Premium AI tutor gating, per-user usage limits and cost-per-user estimate | Captain Adel | Captain-Adel | @FlyGACA | Draft delivered: two-key gate shipped off, limits proposed and not enforced | Captain-Adel #164 | Owner approval of the 40/day limit and provider rates; Platform tier marker |
+| Premium AI tutor gating, per-user usage limits and cost-per-user estimate | Captain Adel | Captain-Adel | @FlyGACA | Draft delivered: two-key gate shipped off, limits proposed and not enforced | Captain-Adel #164 | Owner approval of the 40/day limit and provider rates; confirm the gate reads `tier: all-levels` |
 | Cited C172 and airspace visuals for free samples and premium study content | Aviation Data | C172, saudi-airspace | @FlyGACA | Assigned | - | - |
 | Read-only review of every PR for security, payments, entitlements and EN/AR parity | Scout | All repositories | @FlyGACA | Review delivered; #23 and #3 closed; #164 in review | - | Remaining builder PRs |
 
