@@ -79,7 +79,8 @@ Confirmed with Platform and shared with Commerce and Captain Adel:
 - Writer rules: grant and extend only. It never lowers `plan`, shortens `expiresAt`, clears a live `tier`, or touches another channel's `ownedPacks`, and it cannot close anything; refunds and revocations stay with Platform's billing path. 401, 409 and 422 write nothing; 202 with `matched: false` is retried by Commerce's reconcile.
 - Storage: the entitlements table has no `tier` column, so nothing can persist the marker yet. Adding it is a migration and needs owner approval before any path works.
 - Metering is per surface today: the FlyGACA gateway meters web turns under `premium:<uid>`, and the Captain-Adel service meters direct `/v1/chat` calls under `uid:premium:<uid>`. The two counters are separate and not shared, so a pilot using both surfaces can reach roughly twice the approved daily number. One global ceiling needs one enforcement point or a shared store.
-- Tier 1 records `plan: free` with `tier: study-pdf`. A `free` row is inactive, so readers ignore its marker; Tier 1 access is the `ind.pdf.<level>` pack.
+- Tier 1 records `plan: free` with `tier: study-pdf`. A `free` row is inactive, so readers ignore its marker; Tier 1 access is the `ind.pdf.<level>` pack. Tier 1 sends `expiresAt: null`, so the route must accept a null expiry or that push fails permanently; the marker is informational, so nothing breaks.
+- Switch-on needs `FLYGACA_ORIGIN` and `FLIGHTBAG_ENTITLEMENT_SECRET` on both sides. Until they are set, FlightBag records the push as `disabled` and delivery is unaffected. Header names are case-insensitive; the sender writes `X-FlightBag-Timestamp` and `X-FlightBag-Signature`.
 
 ## Work plan and status
 
@@ -88,7 +89,7 @@ Order: this proposal and copy first; then Commerce, Platform and Captain Adel bu
 | Task | Owner Waker | Repository | Owner | Status | PR | Blockers |
 | --- | --- | --- | --- | --- | --- | --- |
 | Tier and price proposal, funnel copy, email sequence, end card | Brand | FlyGACA-Family | @FlyGACA | In review: Scout re-review closed, no blockers; ready for owner | FlyGACA-Family #23, abacus #3 | Owner price approval |
-| Tier checkout and upgrades | Commerce | FlightBag | @FlyGACA | Draft PR; CI pending | FlightBag #134 | Owner: launch cap overshoot; Platform: signed entitlement upsert |
+| Tier checkout and upgrades | Commerce | FlightBag | @FlyGACA | Draft PR; marker push implemented at 502ba4c; CI pending | FlightBag #134 | Owner: launch cap overshoot; owner: migration; env vars at switch-on |
 | Monthly and yearly question-bank subscription in Moyasar test mode | Commerce | FlightBag | @FlyGACA | Draft PR in the same branch; CI pending | FlightBag #134 | CI green before review |
 | Bundle and welcome vouchers | Commerce | FlightBag | @FlyGACA | Draft PR in the same branch; no outbound email | FlightBag #134 | Owner: discount levels |
 | Gallery downloads as a top-tier bonus with entitlements | Commerce | Gallery | @FlyGACA | Draft PR; CI pending | Gallery #109 | Aviation Data must confirm the five ids; tier marker settled |
