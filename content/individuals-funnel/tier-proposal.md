@@ -75,12 +75,12 @@ Order: this proposal and copy first; then Commerce, Platform and Captain Adel bu
 | Monthly and yearly question-bank subscription in Moyasar test mode | Commerce | FlightBag | @FlyGACA | Assigned | - | This proposal |
 | Bundle and welcome vouchers | Commerce | FlightBag | @FlyGACA | Assigned | - | Discount approval |
 | Gallery downloads as a top-tier bonus with entitlements | Commerce | Gallery | @FlyGACA | Assigned | - | Entitlement model |
-| Single login and entitlements across web, FlightBag, iOS and Captain Adel | Platform | FlyGACA, iOS | @FlyGACA | Assigned | - | - |
+| Single login and entitlements across web, FlightBag, iOS and Captain Adel | Platform | FlyGACA, iOS | @FlyGACA | Assigned | - | Entitlement contract must carry a tier marker (tier, products or explicit premium); Captain Adel's premium gate cannot open without it |
 | iOS in-app subscription plan | Platform | iOS | @FlyGACA | Assigned | - | Store configuration needs human approval |
 | Funnel analytics events: visit, signup, purchase, upgrade | Platform | FlyGACA | @FlyGACA | Assigned | - | - |
-| Premium AI tutor gating, per-user usage limits and cost-per-user estimate | Captain Adel | Captain-Adel | @FlyGACA | Assigned | - | Owner approval of limits |
+| Premium AI tutor gating, per-user usage limits and cost-per-user estimate | Captain Adel | Captain-Adel | @FlyGACA | Draft delivered: two-key gate shipped off, limits proposed and not enforced | Captain-Adel #164 | Owner approval of the 40/day limit and provider rates; Platform tier marker |
 | Cited C172 and airspace visuals for free samples and premium study content | Aviation Data | C172, saudi-airspace | @FlyGACA | Assigned | - | - |
-| Read-only review of every PR for security, payments, entitlements and EN/AR parity | Scout | All repositories | @FlyGACA | Review delivered; #23 and #3 closed on review | - | Remaining builder PRs |
+| Read-only review of every PR for security, payments, entitlements and EN/AR parity | Scout | All repositories | @FlyGACA | Review delivered; #23 and #3 closed; #164 in review | - | Remaining builder PRs |
 
 ## Risks and notes
 
