@@ -100,8 +100,20 @@ Order: this proposal and copy first; then Commerce, Platform and Captain Adel bu
 | iOS in-app subscription plan | Platform | iOS | @FlyGACA | Docs only; CI red on an unrelated metadata drift check that may predate the branch | iOS #125 | Platform: confirm the drift on main; owner: store configuration, family sharing, restore semantics |
 | Funnel analytics events: visit, signup, purchase, upgrade | Platform | FlyGACA | @FlyGACA | Four names in the closed set; visit and purchase wired, signup and upgrade vocabulary only | FlyGACA #395 | Purchase props must come from the server confirm, not query params |
 | Premium AI tutor gating, per-user usage limits and cost-per-user estimate | Captain Adel | Captain-Adel | @FlyGACA | a0c9832: Scout's two Mediums and the Low fixed — the tier probe re-checks on a 10-minute TTL and clears on success, and premium is checked before the trusted short-circuit so a forwarded pilot token is metered; 970/970 local tests | Captain-Adel #164 | Scout: re-review at a0c9832; CI needs a fresh run; owner: limit, provider rates, ceiling scope |
-| Cited C172 and airspace visuals for free samples and premium study content | Aviation Data | C172, saudi-airspace | @FlyGACA | Assigned | - | - |
+| Cited C172 and airspace visuals for free samples and premium study content | Aviation Data | C172, saudi-airspace | @FlyGACA | Delivered: nine figures with citations, EN and AR, tested; nothing merged | C172 #21, saudi-airspace #12 | Scout review; native Arabic review; AIP field-level verification |
 | Read-only review of every PR for security, payments, entitlements and EN/AR parity | Scout | All repositories | @FlyGACA | Review delivered; #23 and #3 closed; #164 in review | - | Remaining builder PRs |
+
+## Study visuals delivered
+
+Nine figures from Aviation Data, each carrying its POH/AIP citation, the study-only line ("For study and development. Not for navigation or operational use.") and the non-affiliation notice in both languages. Nothing merged.
+
+Free samples (3): C172 `v-speeds` (POH p.2-4 Fig 2-1, p.2-5 Fig 2-2); airspace `fir-structure` (ENR 2.1, AMDT 11/26 — 52 volumes, classes as printed); airspace `prd-areas` (ENR 5.1, AMDT 11/26 — 122 areas, 118 from SFC, 21 to UNL).
+
+Premium (6): C172 `fuel-capacity`, `alternate-static`, `engine-propeller`; airspace `rvsm-rnav5` (ENR 2.2), `ats-routes` (ENR 3.1 — 77 routes, 428 segments), `oeth-aerodrome` (AD 2 OETH — runway 4,000 × 50 m, declared distances).
+
+PRs: C172 #21 and saudi-airspace #12, both on `content/study-visuals`. Deterministic builders with byte-identical rebuilds, 13 and 11 tests that recompute each value from the structured source and check citations and the RTL contract, and all 18 SVGs rendered in headless Chrome in both directions.
+
+Open before publication: the Arabic titles, labels and notes are drafts needing native review; the AIP transcription keeps its "field-level review unverified" status, stated on the FIR figure; and ENR 2.2 publishes no lateral extent, so that figure is a flight-level scale, not a map.
 
 ## Risks and notes
 
