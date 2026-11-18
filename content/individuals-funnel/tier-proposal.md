@@ -70,7 +70,7 @@ Order: this proposal and copy first; then Commerce, Platform and Captain Adel bu
 
 | Task | Owner Waker | Repository | Owner | Status | PR | Blockers |
 | --- | --- | --- | --- | --- | --- | --- |
-| Tier and price proposal, funnel copy, email sequence, end card | Brand | FlyGACA-Family | @FlyGACA | In review: Scout findings fixed, re-review requested | FlyGACA-Family #23 | Owner price approval |
+| Tier and price proposal, funnel copy, email sequence, end card | Brand | FlyGACA-Family | @FlyGACA | In review: Scout re-review closed, no blockers; ready for owner | FlyGACA-Family #23, abacus #3 | Owner price approval |
 | Tier checkout and upgrades | Commerce | FlightBag | @FlyGACA | Assigned | - | This proposal |
 | Monthly and yearly question-bank subscription in Moyasar test mode | Commerce | FlightBag | @FlyGACA | Assigned | - | This proposal |
 | Bundle and welcome vouchers | Commerce | FlightBag | @FlyGACA | Assigned | - | Discount approval |
@@ -80,7 +80,7 @@ Order: this proposal and copy first; then Commerce, Platform and Captain Adel bu
 | Funnel analytics events: visit, signup, purchase, upgrade | Platform | FlyGACA | @FlyGACA | Assigned | - | - |
 | Premium AI tutor gating, per-user usage limits and cost-per-user estimate | Captain Adel | Captain-Adel | @FlyGACA | Assigned | - | Owner approval of limits |
 | Cited C172 and airspace visuals for free samples and premium study content | Aviation Data | C172, saudi-airspace | @FlyGACA | Assigned | - | - |
-| Read-only review of every PR for security, payments, entitlements and EN/AR parity | Scout | All repositories | @FlyGACA | Review delivered for #23 and #3; re-review requested | - | Remaining builder PRs |
+| Read-only review of every PR for security, payments, entitlements and EN/AR parity | Scout | All repositories | @FlyGACA | Review delivered; #23 and #3 closed on review | - | Remaining builder PRs |
 
 ## Risks and notes
 
