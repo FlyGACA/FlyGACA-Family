@@ -64,7 +64,7 @@ Launch pricing does not stack with the welcome voucher.
 5. Captain Adel usage limits inside Tier 3. Captain Adel proposes per-user limits and a cost-per-user estimate; the owner approves both.
 6. Whether the annual question-bank subscription auto-renews or is bought per term.
 7. Launch cap: checkouts already in flight can take the count slightly past 100. Accept the overshoot, or reserve seats in advance.
-8. Approve the database migration that adds the `tier` column to entitlements. Nothing can carry the All Levels marker until it lands.
+8. Approve the database migration that adds the `tier` column to entitlements. Nothing can carry the All Levels marker until it lands. No restart is needed afterwards: the tutor's reader re-checks the column every ten minutes and opens on its own.
 9. Set the premium ceiling per surface or globally. Today the gateway and Captain Adel meter separately, so a pilot on both could reach about twice the approved daily number; a global ceiling needs one enforcement point.
 10. Offer a credited upgrade from Starter straight to All Levels. The copy now names only the two supported steps; adding the third pair is a credit-rule decision for the owner and Commerce.
 
@@ -99,7 +99,7 @@ Order: this proposal and copy first; then Commerce, Platform and Captain Adel bu
 | Single login and entitlements across web, FlightBag, iOS and Captain Adel | Platform | FlyGACA, iOS | @FlyGACA | Scout: no merge — the client decoder drops `tier`, an inferred-tier fallback contradicts the contract, and unapproved prices sit in the main bundle; blocked on the tier column | FlyGACA #395 | Platform: wire `tier` through the decoder, delete the fallback, move prices server-side; owner: migration |
 | iOS in-app subscription plan | Platform | iOS | @FlyGACA | Docs only; CI red on an unrelated metadata drift check that may predate the branch | iOS #125 | Platform: confirm the drift on main; owner: store configuration, family sharing, restore semantics |
 | Funnel analytics events: visit, signup, purchase, upgrade | Platform | FlyGACA | @FlyGACA | Four names in the closed set; visit and purchase wired, signup and upgrade vocabulary only | FlyGACA #395 | Purchase props must come from the server confirm, not query params |
-| Premium AI tutor gating, per-user usage limits and cost-per-user estimate | Captain Adel | Captain-Adel | @FlyGACA | f54bf21: Scout withdrew H1; two Mediums open (sticky tier probe, trusted plus bearer unmetered); CI not green | Captain-Adel #164 | Captain Adel: probe TTL and trusted-path guard before the flag; owner: ceiling scope and provider rates |
+| Premium AI tutor gating, per-user usage limits and cost-per-user estimate | Captain Adel | Captain-Adel | @FlyGACA | a0c9832: Scout's two Mediums and the Low fixed — the tier probe re-checks on a 10-minute TTL and clears on success, and premium is checked before the trusted short-circuit so a forwarded pilot token is metered; 970/970 local tests | Captain-Adel #164 | Scout: re-review at a0c9832; CI needs a fresh run; owner: limit, provider rates, ceiling scope |
 | Cited C172 and airspace visuals for free samples and premium study content | Aviation Data | C172, saudi-airspace | @FlyGACA | Assigned | - | - |
 | Read-only review of every PR for security, payments, entitlements and EN/AR parity | Scout | All repositories | @FlyGACA | Review delivered; #23 and #3 closed; #164 in review | - | Remaining builder PRs |
 
